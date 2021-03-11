@@ -1,0 +1,598 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FF4D883F25F9F09800C1263F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4D883E25F9F09800C1263F /* AppDelegate.swift */; };
+		FF4D884125F9F09800C1263F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4D884025F9F09800C1263F /* SceneDelegate.swift */; };
+		FF4D884325F9F09800C1263F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4D884225F9F09800C1263F /* ViewController.swift */; };
+		FF4D884625F9F09800C1263F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF4D884425F9F09800C1263F /* Main.storyboard */; };
+		FF4D884825F9F09B00C1263F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF4D884725F9F09B00C1263F /* Assets.xcassets */; };
+		FF4D884B25F9F09B00C1263F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF4D884925F9F09B00C1263F /* LaunchScreen.storyboard */; };
+		FF4D885625F9F09C00C1263F /* OrionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4D885525F9F09C00C1263F /* OrionTests.swift */; };
+		FF4D886125F9F09C00C1263F /* OrionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4D886025F9F09C00C1263F /* OrionUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FF4D885225F9F09C00C1263F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF4D883325F9F09800C1263F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF4D883A25F9F09800C1263F;
+			remoteInfo = Orion;
+		};
+		FF4D885D25F9F09C00C1263F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF4D883325F9F09800C1263F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF4D883A25F9F09800C1263F;
+			remoteInfo = Orion;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		FF4D883B25F9F09800C1263F /* Orion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Orion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF4D883E25F9F09800C1263F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FF4D884025F9F09800C1263F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		FF4D884225F9F09800C1263F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FF4D884525F9F09800C1263F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FF4D884725F9F09B00C1263F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FF4D884A25F9F09B00C1263F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FF4D884C25F9F09B00C1263F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF4D885125F9F09C00C1263F /* OrionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF4D885525F9F09C00C1263F /* OrionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionTests.swift; sourceTree = "<group>"; };
+		FF4D885725F9F09C00C1263F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF4D885C25F9F09C00C1263F /* OrionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OrionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF4D886025F9F09C00C1263F /* OrionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrionUITests.swift; sourceTree = "<group>"; };
+		FF4D886225F9F09C00C1263F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FF4D883825F9F09800C1263F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4D884E25F9F09C00C1263F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4D885925F9F09C00C1263F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FF4D883225F9F09800C1263F = {
+			isa = PBXGroup;
+			children = (
+				FF4D883D25F9F09800C1263F /* Orion */,
+				FF4D885425F9F09C00C1263F /* OrionTests */,
+				FF4D885F25F9F09C00C1263F /* OrionUITests */,
+				FF4D883C25F9F09800C1263F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FF4D883C25F9F09800C1263F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF4D883B25F9F09800C1263F /* Orion.app */,
+				FF4D885125F9F09C00C1263F /* OrionTests.xctest */,
+				FF4D885C25F9F09C00C1263F /* OrionUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FF4D883D25F9F09800C1263F /* Orion */ = {
+			isa = PBXGroup;
+			children = (
+				FF4D883E25F9F09800C1263F /* AppDelegate.swift */,
+				FF4D884025F9F09800C1263F /* SceneDelegate.swift */,
+				FF4D884225F9F09800C1263F /* ViewController.swift */,
+				FF4D884425F9F09800C1263F /* Main.storyboard */,
+				FF4D884725F9F09B00C1263F /* Assets.xcassets */,
+				FF4D884925F9F09B00C1263F /* LaunchScreen.storyboard */,
+				FF4D884C25F9F09B00C1263F /* Info.plist */,
+			);
+			path = Orion;
+			sourceTree = "<group>";
+		};
+		FF4D885425F9F09C00C1263F /* OrionTests */ = {
+			isa = PBXGroup;
+			children = (
+				FF4D885525F9F09C00C1263F /* OrionTests.swift */,
+				FF4D885725F9F09C00C1263F /* Info.plist */,
+			);
+			path = OrionTests;
+			sourceTree = "<group>";
+		};
+		FF4D885F25F9F09C00C1263F /* OrionUITests */ = {
+			isa = PBXGroup;
+			children = (
+				FF4D886025F9F09C00C1263F /* OrionUITests.swift */,
+				FF4D886225F9F09C00C1263F /* Info.plist */,
+			);
+			path = OrionUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FF4D883A25F9F09800C1263F /* Orion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF4D886525F9F09C00C1263F /* Build configuration list for PBXNativeTarget "Orion" */;
+			buildPhases = (
+				FF4D883725F9F09800C1263F /* Sources */,
+				FF4D883825F9F09800C1263F /* Frameworks */,
+				FF4D883925F9F09800C1263F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Orion;
+			productName = Orion;
+			productReference = FF4D883B25F9F09800C1263F /* Orion.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FF4D885025F9F09C00C1263F /* OrionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF4D886825F9F09C00C1263F /* Build configuration list for PBXNativeTarget "OrionTests" */;
+			buildPhases = (
+				FF4D884D25F9F09C00C1263F /* Sources */,
+				FF4D884E25F9F09C00C1263F /* Frameworks */,
+				FF4D884F25F9F09C00C1263F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FF4D885325F9F09C00C1263F /* PBXTargetDependency */,
+			);
+			name = OrionTests;
+			productName = OrionTests;
+			productReference = FF4D885125F9F09C00C1263F /* OrionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		FF4D885B25F9F09C00C1263F /* OrionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF4D886B25F9F09C00C1263F /* Build configuration list for PBXNativeTarget "OrionUITests" */;
+			buildPhases = (
+				FF4D885825F9F09C00C1263F /* Sources */,
+				FF4D885925F9F09C00C1263F /* Frameworks */,
+				FF4D885A25F9F09C00C1263F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FF4D885E25F9F09C00C1263F /* PBXTargetDependency */,
+			);
+			name = OrionUITests;
+			productName = OrionUITests;
+			productReference = FF4D885C25F9F09C00C1263F /* OrionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FF4D883325F9F09800C1263F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					FF4D883A25F9F09800C1263F = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					FF4D885025F9F09C00C1263F = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = FF4D883A25F9F09800C1263F;
+					};
+					FF4D885B25F9F09C00C1263F = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = FF4D883A25F9F09800C1263F;
+					};
+				};
+			};
+			buildConfigurationList = FF4D883625F9F09800C1263F /* Build configuration list for PBXProject "Orion" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FF4D883225F9F09800C1263F;
+			productRefGroup = FF4D883C25F9F09800C1263F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FF4D883A25F9F09800C1263F /* Orion */,
+				FF4D885025F9F09C00C1263F /* OrionTests */,
+				FF4D885B25F9F09C00C1263F /* OrionUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FF4D883925F9F09800C1263F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF4D884B25F9F09B00C1263F /* LaunchScreen.storyboard in Resources */,
+				FF4D884825F9F09B00C1263F /* Assets.xcassets in Resources */,
+				FF4D884625F9F09800C1263F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4D884F25F9F09C00C1263F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4D885A25F9F09C00C1263F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FF4D883725F9F09800C1263F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF4D884325F9F09800C1263F /* ViewController.swift in Sources */,
+				FF4D883F25F9F09800C1263F /* AppDelegate.swift in Sources */,
+				FF4D884125F9F09800C1263F /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4D884D25F9F09C00C1263F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF4D885625F9F09C00C1263F /* OrionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4D885825F9F09C00C1263F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF4D886125F9F09C00C1263F /* OrionUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FF4D885325F9F09C00C1263F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF4D883A25F9F09800C1263F /* Orion */;
+			targetProxy = FF4D885225F9F09C00C1263F /* PBXContainerItemProxy */;
+		};
+		FF4D885E25F9F09C00C1263F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF4D883A25F9F09800C1263F /* Orion */;
+			targetProxy = FF4D885D25F9F09C00C1263F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FF4D884425F9F09800C1263F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FF4D884525F9F09800C1263F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FF4D884925F9F09B00C1263F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FF4D884A25F9F09B00C1263F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FF4D886325F9F09C00C1263F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FF4D886425F9F09C00C1263F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FF4D886625F9F09C00C1263F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YK8CKY785K;
+				INFOPLIST_FILE = Orion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eduard.Orion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FF4D886725F9F09C00C1263F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YK8CKY785K;
+				INFOPLIST_FILE = Orion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eduard.Orion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FF4D886925F9F09C00C1263F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YK8CKY785K;
+				INFOPLIST_FILE = OrionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eduard.OrionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Orion.app/Orion";
+			};
+			name = Debug;
+		};
+		FF4D886A25F9F09C00C1263F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YK8CKY785K;
+				INFOPLIST_FILE = OrionTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eduard.OrionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Orion.app/Orion";
+			};
+			name = Release;
+		};
+		FF4D886C25F9F09C00C1263F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YK8CKY785K;
+				INFOPLIST_FILE = OrionUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eduard.OrionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Orion;
+			};
+			name = Debug;
+		};
+		FF4D886D25F9F09C00C1263F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YK8CKY785K;
+				INFOPLIST_FILE = OrionUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eduard.OrionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Orion;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FF4D883625F9F09800C1263F /* Build configuration list for PBXProject "Orion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF4D886325F9F09C00C1263F /* Debug */,
+				FF4D886425F9F09C00C1263F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF4D886525F9F09C00C1263F /* Build configuration list for PBXNativeTarget "Orion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF4D886625F9F09C00C1263F /* Debug */,
+				FF4D886725F9F09C00C1263F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF4D886825F9F09C00C1263F /* Build configuration list for PBXNativeTarget "OrionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF4D886925F9F09C00C1263F /* Debug */,
+				FF4D886A25F9F09C00C1263F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF4D886B25F9F09C00C1263F /* Build configuration list for PBXNativeTarget "OrionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF4D886C25F9F09C00C1263F /* Debug */,
+				FF4D886D25F9F09C00C1263F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FF4D883325F9F09800C1263F /* Project object */;
+}
