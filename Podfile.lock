@@ -1,0 +1,52 @@
+PODS:
+  - BulletinBoard (5.0.0)
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
+  - Highlightr (2.1.0)
+  - LUAutocompleteView (4.0.0)
+  - SDWebImage (3.8.3):
+    - SDWebImage/Core (= 3.8.3)
+  - SDWebImage/Core (3.8.3)
+  - SnapKit (5.0.1)
+  - SwiftKeychainWrapper (4.0.1)
+
+DEPENDENCIES:
+  - BulletinBoard
+  - GCDWebServer (~> 3.0)
+  - Highlightr (from `https://github.com/raspu/Highlightr.git`)
+  - LUAutocompleteView
+  - SDWebImage (~> 3.8)
+  - SnapKit
+  - SwiftKeychainWrapper
+
+SPEC REPOS:
+  trunk:
+    - BulletinBoard
+    - GCDWebServer
+    - LUAutocompleteView
+    - SDWebImage
+    - SnapKit
+    - SwiftKeychainWrapper
+
+EXTERNAL SOURCES:
+  Highlightr:
+    :git: https://github.com/raspu/Highlightr.git
+
+CHECKOUT OPTIONS:
+  Highlightr:
+    :commit: 93199b9e434f04bda956a613af8f571933f9f037
+    :git: https://github.com/raspu/Highlightr.git
+
+SPEC CHECKSUMS:
+  BulletinBoard: dba77053c2a7b64953f63073f7534165af2edd21
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
+  Highlightr: 683f05d5223cade533a78528a35c9f06e4caddf8
+  LUAutocompleteView: 604edbbb358d77c8fff4b86137db76a38eb4beda
+  SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  SwiftKeychainWrapper: 807ba1d63c33a7d0613288512399cd1eda1e470c
+
+PODFILE CHECKSUM: 26971b2bd51c4b1bee836034370f8ba275cb6f9a
+
+COCOAPODS: 1.10.1

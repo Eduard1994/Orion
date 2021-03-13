@@ -1,0 +1,113 @@
+//
+//  UIView+Extension.swift
+//  Orion
+//
+//  Created by Eduard Shahnazaryan on 3/11/21.
+//
+
+import UIKit
+
+// MARK: - UIView Extension
+extension UIView {
+    func screenshot() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0)
+        self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
+    }
+    
+    public enum Corner: Int {
+        case TopRight
+        case TopLeft
+        case BottomRight
+        case BottomLeft
+        case All
+    }
+    
+    func cornerRadius(to radius: CGFloat) {
+        if self is UILabel || self is UITextField {
+            self.layer.masksToBounds = true
+        }
+        self.layer.cornerRadius = radius
+    }
+    
+    public func blendCorner(corner: Corner, shapeLayer: inout CAShapeLayer?, length: CGFloat = 8.0) {
+        let maskLayer = CAShapeLayer()
+        let path: CGPath
+        let outlinePath: UIBezierPath
+        switch corner {
+        case .All:
+            (path, outlinePath) = self.makeAnglePathWithRect(self.bounds, topLeftSize: length, topRightSize: length,
+                                                             bottomLeftSize: 0.0, bottomRightSize: 0.0)
+        case .TopRight:
+            (path, outlinePath) = self.makeAnglePathWithRect(self.bounds, topLeftSize: 0.0, topRightSize: length,
+                                                             bottomLeftSize: 0.0, bottomRightSize: 0.0)
+        case .TopLeft:
+            (path, outlinePath) = self.makeAnglePathWithRect(self.bounds, topLeftSize: length, topRightSize: 0.0,
+                                                             bottomLeftSize: 0.0, bottomRightSize: 0.0)
+        case .BottomRight:
+            (path, outlinePath) = self.makeAnglePathWithRect(self.bounds, topLeftSize: 0.0, topRightSize: 0.0,
+                                                             bottomLeftSize: 0.0, bottomRightSize: length)
+        case .BottomLeft:
+            (path, outlinePath) = self.makeAnglePathWithRect(self.bounds, topLeftSize: 0.0, topRightSize: 0.0,
+                                                             bottomLeftSize: length, bottomRightSize: 0.0)
+        }
+        maskLayer.path = path
+        self.layer.mask = maskLayer
+        
+        if shapeLayer == nil {
+            shapeLayer = CAShapeLayer()
+        }
+        shapeLayer?.frame = self.bounds
+        shapeLayer?.path = outlinePath.cgPath
+        shapeLayer?.lineWidth = 1.0
+        shapeLayer?.strokeColor = UIColor.gray.cgColor
+        shapeLayer?.fillColor = UIColor.clear.cgColor
+        if shapeLayer?.superlayer == nil {
+            self.layer.addSublayer(shapeLayer!)
+        }
+    }
+    
+    private func makeAnglePathWithRect(_ rect: CGRect, topLeftSize tl: CGFloat, topRightSize tr: CGFloat,
+                                       bottomLeftSize bl: CGFloat, bottomRightSize br: CGFloat) -> (CGPath, UIBezierPath) {
+        var points = [CGPoint]()
+        
+        points.append(CGPoint(x: rect.origin.x + tl, y: rect.origin.y))
+        points.append(CGPoint(x: rect.origin.x + rect.size.width - tr, y: rect.origin.y))
+        points.append(CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height))
+        points.append(CGPoint(x: rect.origin.x + rect.size.width, y: rect.origin.y + rect.size.height - br))
+        points.append(CGPoint(x: rect.origin.x + rect.size.width - br, y: rect.origin.y + rect.size.height))
+        points.append(CGPoint(x: rect.origin.x + bl, y: rect.origin.y + rect.size.height))
+        points.append(CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height - bl))
+        points.append(CGPoint(x: rect.origin.x, y: rect.origin.y + rect.size.height))
+        
+        let outlinePoints = points[0..<points.count - 3]
+        
+        let path = CGMutablePath()
+        path.move(to: points.first!)
+        for point in points where point != points.first {
+            path.addLine(to: point)
+        }
+        path.addLine(to: points.first!)
+        
+        let outlinePath = UIBezierPath()
+        outlinePath.move(to: outlinePoints.first!)
+        for point in outlinePoints where point != outlinePoints.first {
+            outlinePath.addLine(to: point)
+        }
+        
+        return (path, outlinePath)
+    }
+    
+    @objc var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
+}
