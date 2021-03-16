@@ -68,8 +68,8 @@ class ExtensionsTableViewController: UITableViewController, ScriptEditorDelegate
             return 1
         }
         
-//        return extensions?.count ?? 0 // Will be changed soon
-        return 0
+        return extensions?.count ?? 0 // Will be changed soon
+//        return 0
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

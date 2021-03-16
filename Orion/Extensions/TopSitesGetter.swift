@@ -31,7 +31,7 @@ class TopSitesGetter: BuiltinExtension {
 // MARK: - WKScripMessageHandler
 extension TopSitesGetter: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let body = message as? [Any] else {
+        guard let body = message.body as? String else {
             return
         }
         

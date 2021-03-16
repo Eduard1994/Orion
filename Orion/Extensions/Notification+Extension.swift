@@ -9,5 +9,6 @@ import Foundation
 
 extension NSNotification.Name {
     static let adBlockSettingsChanged = Notification.Name("adBlockSettingsChanged")
+    static let FileDidDownload = Notification.Name("FileDidDownload")
 }
 

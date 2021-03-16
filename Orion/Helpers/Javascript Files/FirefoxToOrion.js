@@ -1,5 +1,5 @@
 // Enabling this extension will replace all
-// occurrences of "Cloud" with "Butt"
+// occurrences of "Firefox" with "Orion"
 // This is especially fun if you forget
 // you've enabled it. Try searching for
 // "the cloud" on google to see it in
@@ -32,14 +32,14 @@ function walk(node) {
 function handleText(textNode)  {
     var v = textNode.nodeValue;
     
-    v = v.replace(/\bThe Cloud\b/g, "My Butt");
-    v = v.replace(/\bThe cloud\b/g, "My butt");
-    v = v.replace(/\bthe Cloud\b/g, "my Butt");
-    v = v.replace(/\bthe cloud\b/g, "my butt");
-    v = v.replace(/\bcloud\b/g, "butt");
-    v = v.replace(/\bCloud\b/g, "Butt");
-    v = v.replace(/\bclouds\b/g, "butts");
-    v = v.replace(/\bClouds\b/g, "Butts");
+    v = v.replace(/\bThe Firefox\b/g, "My Orion");
+    v = v.replace(/\bThe firefox\b/g, "My orion");
+    v = v.replace(/\bthe Firefox\b/g, "my Orion");
+    v = v.replace(/\bthe firefox\b/g, "my orion");
+    v = v.replace(/\bfirefox\b/g, "orion");
+    v = v.replace(/\bFirefox\b/g, "Orion");
+    v = v.replace(/\bfirefoxs\b/g, "Orions");
+    v = v.replace(/\bFirefoxs\b/g, "Orions");
     
     textNode.nodeValue = v;
 }

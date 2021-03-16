@@ -24,44 +24,39 @@ if (!window.__firefox__) {
     window.__firefox__ = {};
 }
 
-window.__firefox__.topSite = function() {
-    
+
+if (!window.__firefox__) {
+  Object.defineProperty(window, "__firefox__", {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: {
+      userScripts: {},
+      includeOnce: function(userScript, initializer) {
+        if (!__firefox__.userScripts[userScript]) {
+          __firefox__.userScripts[userScript] = true;
+          if (typeof initializer === 'function') {
+            initializer();
+          }
+          return false;
+        }
+
+        return true;
+      }
+    }
+  });
+}
+
+window.__firefox__= function() {
     function getTopSites() {
-//        window.__firefox__.topSites.get().then((sites) => {
-        var bro = window.__firefox__;
-        bro.topSites.get().then((sites) => {
-//            var div = document.getElementById('site-list');
-//
-//            document.querySelector('#my-manifest-placeholder').setAttribute('href', '/my-dynamic-manifest-url.json');
-//
-//            if (!sites.length) {
-//                div.innerText = 'No sites returned from the topSites API.';
-//                return;
-//            }
-            
-//            let ul = document.createElement('ul');
-//            ul.className = 'list-group';
-//            for (let site of sites) {
-//                let li = document.createElement('li');
-//                li.className = 'list-group-item';
-//                let a = document.createElement('a');
-//                a.href = site.url;
-//                a.innerText = site.title || site.url;
-//                li.appendChild(a);
-//                ul.appendChild(li);
-//            }
-//
-//            div.appendChild(ul);
-//            console.log("Yuhuuu");
-//            console.log(sites);
-            
+        var browser = window.__firefox__;
+        browser.topSites.get().then((sites) => {
             webkit.messageHandlers.topSitesMessageHandler.postMessage(sites)
         });
     }
-    
     return {
         getTopSites : getTopSites
     }
 }();
 
-window.__firefox__.topSite.getTopSites();
+window.__firefox__.getTopSites();

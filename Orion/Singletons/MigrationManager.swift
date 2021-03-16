@@ -57,14 +57,14 @@ class MigrationManager: NSObject {
         
         Realm.Configuration.defaultConfiguration = realmConfig
         
-        if !UserDefaults.standard.bool(forKey: "cloudToButtAdded") {
-            if let filePath = Bundle.main.path(forResource: "CloudToButt", ofType: "js"),
+        if !UserDefaults.standard.bool(forKey: "firefoxToOrionAdded") {
+            if let filePath = Bundle.main.path(forResource: "FirefoxToOrion", ofType: "js"),
                 let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
-                UserDefaults.standard.set(true, forKey: "cloudToButtAdded")
+                UserDefaults.standard.set(true, forKey: "firefoxToOrionAdded")
                 
                 let exten = ExtensionModel()
                 exten.id = UUID().uuidString
-                exten.name = "Cloud To Butt"
+                exten.name = "Firefox to Orion"
                 exten.source = content
                 exten.active = false
                 

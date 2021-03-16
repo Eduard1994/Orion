@@ -17,9 +17,16 @@ class BrowserViewController: UIViewController, HistoryNavigationDelegate {
     var urlBar: URLBar!
     private let autocompleteView = LUAutocompleteView()
     
+    var pendingToast: Toast? // A toast that might be waiting for BVC to appear before displaying
+    var downloadToast: DownloadToast? // A toast that is showing the combined download progress
+    
+    weak var pendingDownloadWebView: WKWebView?
+
+    let downloadQueue = DownloadQueue()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        downloadQueue.delegate = self
         self.view.backgroundColor = .mainDarkGray
         
         let padding = UIView().then { [unowned self] in
@@ -121,6 +128,15 @@ class BrowserViewController: UIViewController, HistoryNavigationDelegate {
         return true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let toast = self.pendingToast {
+            self.pendingToast = nil
+            show(toast: toast, afterWaiting: ButtonToastUX.ToastDelay)
+        }
+    }
+    
     func showAdBlockEnabled() {
         UserDefaults.standard.set(false, forKey: SettingsKeys.needToShowAdBlockAlert)
         
@@ -133,6 +149,23 @@ class BrowserViewController: UIViewController, HistoryNavigationDelegate {
         delay(0.5) {
             self.present(av, animated: true, completion: nil)
         }
+    }
+    
+    func show(toast: Toast, afterWaiting delay: DispatchTimeInterval = SimpleToastUX.ToastDelayBefore, duration: DispatchTimeInterval? = SimpleToastUX.ToastDismissAfter) {
+        if let downloadToast = toast as? DownloadToast {
+            self.downloadToast = downloadToast
+        }
+
+        // If BVC isnt visible hold on to this toast until viewDidAppear
+        if self.view.window == nil {
+            self.pendingToast = toast
+            return
+        }
+
+        toast.showToast(viewController: self, delay: delay, duration: duration, makeConstraints: { make in
+            make.left.right.equalTo(self.view)
+            make.bottom.equalTo(self.view?.snp.bottom ?? 0)
+        })
     }
     
     @objc func addTab() {
@@ -288,3 +321,63 @@ extension BrowserViewController: LUAutocompleteViewDelegate {
     }
 }
 
+extension BrowserViewController: DownloadQueueDelegate {
+    func downloadQueue(_ downloadQueue: DownloadQueue, didStartDownload download: Download) {
+        // If no other download toast is shown, create a new download toast and show it.
+        guard let downloadToast = self.downloadToast else {
+            let downloadToast = DownloadToast(download: download, completion: { buttonPressed in
+                // When this toast is dismissed, be sure to clear this so that any
+                // subsequent downloads cause a new toast to be created.
+                self.downloadToast = nil
+
+                // Handle download cancellation
+                if buttonPressed, !downloadQueue.isEmpty {
+                    downloadQueue.cancelAll()
+
+                    let downloadCancelledToast = ButtonToast(labelText: Strings.DownloadCancelledToastLabelText, backgroundColor: UIColor.gray.withAlphaComponent(0.6), textAlignment: .center)
+
+                    self.show(toast: downloadCancelledToast)
+                }
+            })
+
+            show(toast: downloadToast, duration: nil)
+            return
+        }
+
+        // Otherwise, just add this download to the existing download toast.
+        downloadToast.addDownload(download)
+    }
+
+    func downloadQueue(_ downloadQueue: DownloadQueue, didDownloadCombinedBytes combinedBytesDownloaded: Int64, combinedTotalBytesExpected: Int64?) {
+        downloadToast?.combinedBytesDownloaded = combinedBytesDownloaded
+    }
+
+    func downloadQueue(_ downloadQueue: DownloadQueue, download: Download, didFinishDownloadingTo location: URL) {
+        print("didFinishDownloadingTo(): \(location)")
+    }
+
+    func downloadQueue(_ downloadQueue: DownloadQueue, didCompleteWithError error: Error?) {
+        guard let downloadToast = self.downloadToast, let download = downloadToast.downloads.first else {
+            return
+        }
+
+        DispatchQueue.main.async {
+            downloadToast.dismiss(false)
+
+            if error == nil {
+                let downloadCompleteToast = ButtonToast(labelText: download.filename, imageName: "check", buttonText: Strings.DownloadsButtonTitle, completion: { buttonPressed in
+                    guard buttonPressed else { return }
+
+//                    self.showLibrary(panel: .downloads)
+//                    TelemetryWrapper.recordEvent(category: .action, method: .view, object: .downloadsPanel, value: .downloadCompleteToast)
+                })
+
+                self.show(toast: downloadCompleteToast, duration: DispatchTimeInterval.seconds(8))
+            } else {
+                let downloadFailedToast = ButtonToast(labelText: Strings.DownloadFailedToastLabelText, backgroundColor: UIColor.gray.withAlphaComponent(0.6), textAlignment: .center)
+
+                self.show(toast: downloadFailedToast, duration: nil)
+            }
+        }
+    }
+}

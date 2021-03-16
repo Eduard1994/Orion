@@ -44,6 +44,7 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         backgroundColor = .white
         
         webView = WKWebView(frame: .zero, configuration: loadConfiguration()).then { [unowned self] in
+            $0.customUserAgent = UserAgent.desktopUserAgent()
             $0.allowsLinkPreview = true
             $0.allowsBackForwardNavigationGestures = true
             $0.navigationDelegate = self
@@ -258,6 +259,156 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         finishedLoadUpdates()
     }
     
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+//        decisionHandler(.allow)
+        guard let urlString = navigationAction.request.url else {
+            return
+        }
+
+        print("URL for redirecting = \(urlString)")
+        
+        if urlString.absoluteString.contains("top_sites_button") {
+            decisionHandler(.cancel)
+//            executeDocumentDownloadScript(forAbsoluteUrl: urlString)
+//            DownloadHelper.requestDownload(url: urlString, webView: webView)
+            let destURL = URL.documents.appendingPathComponent("top_sites_button")
+            Downloader.load(url: urlString, to: destURL) {
+                print("Downloaded")
+            }
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+    
+    /*
+     Handler method for JavaScript calls.
+     Receive JavaScript message with downloaded document
+     */
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        debugPrint("did receive message \(message.name)")
+        
+        
+        if (message.name == "openDocument") {
+            previewDocument(messageBody: message.body as! String)
+        } else if (message.name == "jsError") {
+            debugPrint(message.body as! String)
+        }
+    }
+    
+    /*
+     Open downloaded document in QuickLook preview
+     */
+    private func previewDocument(messageBody: String) {
+        // messageBody is in the format ;data:;base64,
+        
+        // split on the first ";", to reveal the filename
+        let filenameSplits = messageBody.split(separator: ";", maxSplits: 1, omittingEmptySubsequences: false)
+        
+        let filename = String(filenameSplits[0])
+        
+        // split the remaining part on the first ",", to reveal the base64 data
+        let dataSplits = filenameSplits[1].split(separator: ",", maxSplits: 1, omittingEmptySubsequences: false)
+        
+        let data = Data(base64Encoded: String(dataSplits[1]))
+        
+        if (data == nil) {
+            debugPrint("Could not construct data from base64")
+            return
+        }
+        
+        // store the file on disk (.removingPercentEncoding removes possible URL encoded characters like "%20" for blank)
+        let localFileURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename.removingPercentEncoding ?? filename)
+        
+        do {
+            try data!.write(to: localFileURL);
+        } catch {
+            debugPrint(error)
+            return
+        }
+        print("Local URL")
+    }
+    
+    /*
+     Intercept the download of documents in webView, trigger the download in JavaScript and pass the binary file to JavaScript handler in Swift code
+     */
+    private func executeDocumentDownloadScript(forAbsoluteUrl absoluteUrl : String) {
+//        openURL(path: absoluteUrl)
+        // TODO: Add more supported mime-types for missing content-disposition headers
+//        webView?.evaluateJavaScript("""
+//                (async function download() {
+//                    const url = '\(absoluteUrl)';
+//                    try {
+//                        // we use a second try block here to have more detailed error information
+//                        // because of the nature of JS the outer try-catch doesn't know anything where the error happended
+//                        let res;
+//                        try {
+//                            res = await fetch(url, {
+//                                credentials: 'include'
+//                            });
+//                        } catch (err) {
+//                            webkit.messageHandlers.jsError.postMessage(`fetch threw, error: ${err}, url: ${url}`);
+//                            return;
+//                        }
+//                        if (!res.ok) {
+//                            webkit.messageHandlers.jsError.postMessage(`Response status was not ok, status: ${res.status}, url: ${url}`);
+//                            return;
+//                        }
+//                        const contentDisp = res.headers.get('content-disposition');
+//                        if (contentDisp) {
+//                            const match = contentDisp.match(/(^;|)\\s*filename=\\s*(\"([^\"]*)\"|([^;\\s]*))\\s*(;|$)/i);
+//                            if (match) {
+//                                filename = match[3] || match[4];
+//                            } else {
+//                                // TODO: we could here guess the filename from the mime-type (e.g. unnamed.pdf for pdfs, or unnamed.tiff for tiffs)
+//                                webkit.messageHandlers.jsError.postMessage(`content-disposition header could not be matched against regex, content-disposition: ${contentDisp} url: ${url}`);
+//                            }
+//                        } else {
+//                            webkit.messageHandlers.jsError.postMessage(`content-disposition header missing, url: ${url}`);
+//                            return;
+//                        }
+//                        if (!filename) {
+//                            const contentType = res.headers.get('content-type');
+//                            if (contentType) {
+//                                if (contentType.indexOf('application/json') === 0) {
+//                                    filename = 'unnamed.pdf';
+//                                } else if (contentType.indexOf('image/tiff') === 0) {
+//                                    filename = 'unnamed.tiff';
+//                                }
+//                            }
+//                        }
+//                        if (!filename) {
+//                            webkit.messageHandlers.jsError.postMessage(`Could not determine filename from content-disposition nor content-type, content-dispositon: ${contentDispositon}, content-type: ${contentType}, url: ${url}`);
+//                        }
+//                        let data;
+//                        try {
+//                            data = await res.blob();
+//                        } catch (err) {
+//                            webkit.messageHandlers.jsError.postMessage(`res.blob() threw, error: ${err}, url: ${url}`);
+//                            return;
+//                        }
+//                        const fr = new FileReader();
+//                        fr.onload = () => {
+//                            webkit.messageHandlers.openExt.postMessage(`${filename};${fr.result}`)
+//                        };
+//                        fr.addEventListener('error', (err) => {
+//                            webkit.messageHandlers.jsError.postMessage(`FileReader threw, error: ${err}`)
+//                        })
+//                        fr.readAsDataURL(data);
+//                    } catch (err) {
+//                        // TODO: better log the error, currently only TypeError: Type error
+//                        webkit.messageHandlers.jsError.postMessage(`JSError while downloading document, url: ${url}, err: ${err}`)
+//                    }
+//                })();
+//                // null is needed here as this eval returns the last statement and we can't return a promise
+//                null;
+//            """) { (result, err) in
+//            print("Result is = \(result)")
+//            if (err != nil) {
+//                debugPrint("JS ERR: \(String(describing: err))")
+//            }
+//        }
+    }
+    
     @objc func finishedLoadUpdates() {
         guard let webView = webView else { return }
         
@@ -347,13 +498,7 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         self.parentViewController?.present(av, animated: true, completion: nil)
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("message = \(message)")
-    }
-    
-    
     // MARK: - Helper methods
-    
     @objc func tryToGetFavicon(for url: URL?) {
         if let faviconURL = favicon?.iconURL {
             tabView?.tabImageView?.sd_setImage(with: URL(string: faviconURL), placeholderImage: UIImage(named: "globe"))
