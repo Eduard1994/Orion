@@ -31,7 +31,10 @@
 		FF74D4C625FEC7410005E1CD /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF74D4C525FEC7410005E1CD /* UserAgent.swift */; };
 		FF74D4C925FEC7810005E1CD /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF74D4C825FEC7810005E1CD /* AppInfo.swift */; };
 		FF74D4CC25FEC7B80005E1CD /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF74D4CB25FEC7B80005E1CD /* DeviceInfo.swift */; };
+		FF788AED2602191E0027443F /* TopSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF788AEC2602191E0027443F /* TopSite.swift */; };
+		FF788AF02602201C0027443F /* Download.js in Resources */ = {isa = PBXBuildFile; fileRef = FF788AEF2602201C0027443F /* Download.js */; };
 		FF848E1D25FA10F60069F769 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF848E1C25FA10F60069F769 /* UIView+Extension.swift */; };
+		FF89863F2601BE9A00EE6D48 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF89863E2601BE9A00EE6D48 /* NetworkExtension.framework */; };
 		FFB84FC925FF37B0009EFF8B /* DownloadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB84FC825FF37B0009EFF8B /* DownloadQueue.swift */; };
 		FFB84FCC25FF3894009EFF8B /* DownloadContentScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB84FCB25FF3894009EFF8B /* DownloadContentScript.swift */; };
 		FFB84FCF25FF3BDA009EFF8B /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB84FCE25FF3BDA009EFF8B /* Bytes.swift */; };
@@ -43,6 +46,7 @@
 		FFB9E07325FC6619006B2654 /* TopSitesGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB9E07225FC6619006B2654 /* TopSitesGetter.swift */; };
 		FFB9E07625FC6745006B2654 /* TopSites.js in Resources */ = {isa = PBXBuildFile; fileRef = FFB9E07525FC6745006B2654 /* TopSites.js */; };
 		FFD279EF25FECDE8000F6DDC /* __firefox__.js in Resources */ = {isa = PBXBuildFile; fileRef = FFD279EE25FECDE8000F6DDC /* __firefox__.js */; };
+		FFE877F8260051370040BF53 /* AddExtensionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE877F7260051370040BF53 /* AddExtensionsManager.swift */; };
 		FFFB0BA925F9F18400DA0FB6 /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFB0BA825F9F18400DA0FB6 /* BrowserViewController.swift */; };
 		FFFB0BBC25F9F7CD00DA0FB6 /* WebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFB0BBB25F9F7CD00DA0FB6 /* WebView+Extension.swift */; };
 		FFFB261825FADC1F00B8E7D5 /* SharedConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFB261725FADC1F00B8E7D5 /* SharedConfig.swift */; };
@@ -106,7 +110,11 @@
 		FF74D4C525FEC7410005E1CD /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		FF74D4C825FEC7810005E1CD /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		FF74D4CB25FEC7B80005E1CD /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
+		FF788AEC2602191E0027443F /* TopSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSite.swift; sourceTree = "<group>"; };
+		FF788AEF2602201C0027443F /* Download.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Download.js; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.javascript; };
 		FF848E1C25FA10F60069F769 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		FF89863D2601BE9A00EE6D48 /* Orion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Orion.entitlements; sourceTree = "<group>"; };
+		FF89863E2601BE9A00EE6D48 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		FFB84FC825FF37B0009EFF8B /* DownloadQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadQueue.swift; sourceTree = "<group>"; };
 		FFB84FCB25FF3894009EFF8B /* DownloadContentScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadContentScript.swift; sourceTree = "<group>"; };
 		FFB84FCE25FF3BDA009EFF8B /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
@@ -118,6 +126,7 @@
 		FFB9E07225FC6619006B2654 /* TopSitesGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesGetter.swift; sourceTree = "<group>"; };
 		FFB9E07525FC6745006B2654 /* TopSites.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = TopSites.js; sourceTree = "<group>"; };
 		FFD279EE25FECDE8000F6DDC /* __firefox__.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = __firefox__.js; sourceTree = "<group>"; };
+		FFE877F7260051370040BF53 /* AddExtensionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExtensionsManager.swift; sourceTree = "<group>"; };
 		FFFB0BA825F9F18400DA0FB6 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		FFFB0BBB25F9F7CD00DA0FB6 /* WebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebView+Extension.swift"; sourceTree = "<group>"; };
 		FFFB261725FADC1F00B8E7D5 /* SharedConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConfig.swift; sourceTree = "<group>"; };
@@ -158,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E56DFC8E06858C93369A5B1 /* Pods_Orion.framework in Frameworks */,
+				FF89863F2601BE9A00EE6D48 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +177,7 @@
 		B27DF4F381255078E2B38CAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FF89863E2601BE9A00EE6D48 /* NetworkExtension.framework */,
 				4070D622C850E1CC6752796D /* Pods_Orion.framework */,
 			);
 			name = Frameworks;
@@ -188,6 +199,7 @@
 				FFB9E07525FC6745006B2654 /* TopSites.js */,
 				FF11D71725FAE8F400923764 /* FirefoxToOrion.js */,
 				FFD279EE25FECDE8000F6DDC /* __firefox__.js */,
+				FF788AEF2602201C0027443F /* Download.js */,
 			);
 			path = "Javascript Files";
 			sourceTree = "<group>";
@@ -213,6 +225,7 @@
 		FF4D883D25F9F09800C1263F /* Orion */ = {
 			isa = PBXGroup;
 			children = (
+				FF89863D2601BE9A00EE6D48 /* Orion.entitlements */,
 				FF55514125FA0B180028F6CF /* Helpers */,
 				FFFB0BBA25F9F7BF00DA0FB6 /* Extensions */,
 				FFFB263825FADF5000B8E7D5 /* Singletons */,
@@ -308,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				FFFB263925FADF6A00B8E7D5 /* MigrationManager.swift */,
+				FFE877F7260051370040BF53 /* AddExtensionsManager.swift */,
 				FFFB263C25FADF7D00B8E7D5 /* WebViewManager.swift */,
 				FFFB263F25FADF9700B8E7D5 /* SuggestionManager.swift */,
 				FFFB264225FADFAD00B8E7D5 /* WebServer.swift */,
@@ -323,6 +337,7 @@
 				FFFB264D25FAE01B00B8E7D5 /* BrowsingSession.swift */,
 				FFFB265025FAE02E00B8E7D5 /* HistoryEntry.swift */,
 				FFFB265325FAE04000B8E7D5 /* BookMark.swift */,
+				FF788AEC2602191E0027443F /* TopSite.swift */,
 				FF74D4C825FEC7810005E1CD /* AppInfo.swift */,
 				FF74D4C525FEC7410005E1CD /* UserAgent.swift */,
 				FF74D4CB25FEC7B80005E1CD /* DeviceInfo.swift */,
@@ -437,6 +452,7 @@
 				FF4D884625F9F09800C1263F /* Main.storyboard in Resources */,
 				FF11D71525FAE8EA00923764 /* Favicons.js in Resources */,
 				FF11D71825FAE8F400923764 /* FirefoxToOrion.js in Resources */,
+				FF788AF02602201C0027443F /* Download.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +535,7 @@
 				FF74D4CC25FEC7B80005E1CD /* DeviceInfo.swift in Sources */,
 				FFFB268325FAE62700B8E7D5 /* SettingsTableViewController.swift in Sources */,
 				FF4D883F25F9F09800C1263F /* AppDelegate.swift in Sources */,
+				FF788AED2602191E0027443F /* TopSite.swift in Sources */,
 				FFFB264025FADF9700B8E7D5 /* SuggestionManager.swift in Sources */,
 				FF2BE2AB25FAC9FA0009418E /* FaviconGetter.swift in Sources */,
 				FFB84FC925FF37B0009EFF8B /* DownloadQueue.swift in Sources */,
@@ -538,6 +555,7 @@
 				FF55514325FA0B330028F6CF /* URLBar.swift in Sources */,
 				FFFB261825FADC1F00B8E7D5 /* SharedConfig.swift in Sources */,
 				FFFB262725FADD9A00B8E7D5 /* Then.swift in Sources */,
+				FFE877F8260051370040BF53 /* AddExtensionsManager.swift in Sources */,
 				FF74D4C925FEC7810005E1CD /* AppInfo.swift in Sources */,
 				FFFB267A25FAE5CB00B8E7D5 /* ScriptEditorViewController.swift in Sources */,
 				FF1C40CC25FFE97800B1822F /* URL+Extension.swift in Sources */,
@@ -695,6 +713,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Orion/Orion.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YK8CKY785K;
 				INFOPLIST_FILE = "$(SRCROOT)/Orion/Supporting Files/Info.plist";
@@ -716,6 +735,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Orion/Orion.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YK8CKY785K;
 				INFOPLIST_FILE = "$(SRCROOT)/Orion/Supporting Files/Info.plist";

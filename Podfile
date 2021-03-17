@@ -19,6 +19,6 @@ target 'Orion' do
     pod 'GCDWebServer', '~> 3.0'
     pod 'BulletinBoard'
     pod 'SwiftKeychainWrapper'
-
+    pod 'Zip', '~> 2.1'
 
 end

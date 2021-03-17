@@ -1,18 +1,18 @@
 //
-//  MigrationManager.swift
+//  AddExtensionsManager.swift
 //  Orion
 //
-//  Created by Eduard Shahnazaryan on 3/12/21.
+//  Created by Eduard Shahnazaryan on 3/16/21.
 //
 
 import UIKit
 import RealmSwift
 import SwiftKeychainWrapper
 
-class MigrationManager: NSObject {
-    @objc static let shared = MigrationManager()
+class AddExtensionsManager: NSObject {
+    @objc static let shared = AddExtensionsManager()
     
-    @objc func attemptMigration() {
+    @objc func addExtension() {
         let realmConfig = Realm.Configuration(
             schemaVersion: 6,
             migrationBlock: { migration, oldSchemaVersion in
@@ -59,7 +59,7 @@ class MigrationManager: NSObject {
         
         if !UserDefaults.standard.bool(forKey: "firefoxToOrionAdded") {
             if let filePath = Bundle.main.path(forResource: "FirefoxToOrion", ofType: "js"),
-                let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
+               let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
                 UserDefaults.standard.set(true, forKey: "firefoxToOrionAdded")
                 
                 let exten = ExtensionModel()
@@ -78,28 +78,5 @@ class MigrationManager: NSObject {
                 }
             }
         }
-        
-//        if !UserDefaults.standard.bool(forKey: "topSitesAdded") {
-//            if let path = Bundle.main.path(forResource: "panel", ofType: "js"),
-//               let content = try? String(contentsOfFile: path, encoding: .utf8) {
-//                UserDefaults.standard.set(true, forKey: "topSitesAdded")
-//                
-//                let exten = ExtensionModel()
-//                exten.id = UUID().uuidString
-//                exten.name = "Top Sites"
-//                exten.source = content
-//                exten.active = false
-//                
-//                do {
-//                    let realm = try Realm()
-//                    try realm.write {
-//                        realm.add(exten)
-//                    }
-//                } catch {
-//                    print("Realm error: \(error.localizedDescription)")
-//                }
-//            }
-//        }
     }
 }
-

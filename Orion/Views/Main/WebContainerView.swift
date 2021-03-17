@@ -9,12 +9,15 @@ import UIKit
 import WebKit
 import SDWebImage
 import RealmSwift
+import Zip
 
 class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     
     @objc weak var parentView: UIView?
     @objc var webView: WKWebView?
     @objc var isObserving = false
+    
+    var helper:WKWebviewDownloadHelper!
     
     @objc weak var tabView: TabView?
     var favicon: Favicon?
@@ -82,6 +85,9 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
                 let _ = self?.webView?.load(URLRequest(url: URL(string: "http://localhost:8080")!))
             }
         }
+        
+        let mimeTypes = [MimeType(type: "ms-excel", fileExtension: "xls"), MimeType(type: "pdf", fileExtension: "pdf"), MimeType(type: "xpi", fileExtension: "xpi"), MimeType(type: "zip", fileExtension: "zip")]
+        helper = WKWebviewDownloadHelper(webView: webView!, mimeTypes: mimeTypes, delegate: self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -259,9 +265,14 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         finishedLoadUpdates()
     }
     
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        if let mimeType = navigationResponse.response.mimeType {
+            print("Mime type = \(mimeType)")
+        }
+    }
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-//        decisionHandler(.allow)
-        guard let urlString = navigationAction.request.url else {
+        guard var urlString = navigationAction.request.url else {
             return
         }
 
@@ -269,11 +280,29 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         
         if urlString.absoluteString.contains("top_sites_button") {
             decisionHandler(.cancel)
-//            executeDocumentDownloadScript(forAbsoluteUrl: urlString)
-//            DownloadHelper.requestDownload(url: urlString, webView: webView)
+            urlString.deletePathExtension()
+            urlString.appendPathExtension("zip")
             let destURL = URL.documents.appendingPathComponent("top_sites_button")
+            executeDocumentDownloadScript(forAbsoluteUrl: urlString.absoluteString)
             Downloader.load(url: urlString, to: destURL) {
                 print("Downloaded")
+                DispatchQueue.main.async {
+                    do {
+                        guard let filePath = Bundle.main.path(forResource: "panel", ofType: "html")
+                        else {
+                            // File Error
+                            print ("File reading error")
+                            return
+                        }
+                        
+                        let contents =  try String(contentsOfFile: filePath, encoding: .utf8)
+                        let baseUrl = URL(fileURLWithPath: filePath)
+                        webView.loadHTMLString(contents as String, baseURL: baseUrl)
+                    }
+                    catch {
+                        print ("File HTML error")
+                    }
+                }
             }
         } else {
             decisionHandler(.allow)
@@ -286,9 +315,9 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
      */
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         debugPrint("did receive message \(message.name)")
+        print("\(message.body)")
         
-        
-        if (message.name == "openDocument") {
+        if (message.name == "openExt") {
             previewDocument(messageBody: message.body as! String)
         } else if (message.name == "jsError") {
             debugPrint(message.body as! String)
@@ -332,81 +361,81 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
      Intercept the download of documents in webView, trigger the download in JavaScript and pass the binary file to JavaScript handler in Swift code
      */
     private func executeDocumentDownloadScript(forAbsoluteUrl absoluteUrl : String) {
-//        openURL(path: absoluteUrl)
-        // TODO: Add more supported mime-types for missing content-disposition headers
-//        webView?.evaluateJavaScript("""
-//                (async function download() {
-//                    const url = '\(absoluteUrl)';
-//                    try {
-//                        // we use a second try block here to have more detailed error information
-//                        // because of the nature of JS the outer try-catch doesn't know anything where the error happended
-//                        let res;
-//                        try {
-//                            res = await fetch(url, {
-//                                credentials: 'include'
-//                            });
-//                        } catch (err) {
-//                            webkit.messageHandlers.jsError.postMessage(`fetch threw, error: ${err}, url: ${url}`);
-//                            return;
-//                        }
-//                        if (!res.ok) {
-//                            webkit.messageHandlers.jsError.postMessage(`Response status was not ok, status: ${res.status}, url: ${url}`);
-//                            return;
-//                        }
-//                        const contentDisp = res.headers.get('content-disposition');
-//                        if (contentDisp) {
-//                            const match = contentDisp.match(/(^;|)\\s*filename=\\s*(\"([^\"]*)\"|([^;\\s]*))\\s*(;|$)/i);
-//                            if (match) {
-//                                filename = match[3] || match[4];
-//                            } else {
-//                                // TODO: we could here guess the filename from the mime-type (e.g. unnamed.pdf for pdfs, or unnamed.tiff for tiffs)
-//                                webkit.messageHandlers.jsError.postMessage(`content-disposition header could not be matched against regex, content-disposition: ${contentDisp} url: ${url}`);
-//                            }
-//                        } else {
-//                            webkit.messageHandlers.jsError.postMessage(`content-disposition header missing, url: ${url}`);
-//                            return;
-//                        }
-//                        if (!filename) {
-//                            const contentType = res.headers.get('content-type');
-//                            if (contentType) {
-//                                if (contentType.indexOf('application/json') === 0) {
-//                                    filename = 'unnamed.pdf';
-//                                } else if (contentType.indexOf('image/tiff') === 0) {
-//                                    filename = 'unnamed.tiff';
-//                                }
-//                            }
-//                        }
-//                        if (!filename) {
-//                            webkit.messageHandlers.jsError.postMessage(`Could not determine filename from content-disposition nor content-type, content-dispositon: ${contentDispositon}, content-type: ${contentType}, url: ${url}`);
-//                        }
-//                        let data;
-//                        try {
-//                            data = await res.blob();
-//                        } catch (err) {
-//                            webkit.messageHandlers.jsError.postMessage(`res.blob() threw, error: ${err}, url: ${url}`);
-//                            return;
-//                        }
-//                        const fr = new FileReader();
-//                        fr.onload = () => {
-//                            webkit.messageHandlers.openExt.postMessage(`${filename};${fr.result}`)
-//                        };
-//                        fr.addEventListener('error', (err) => {
-//                            webkit.messageHandlers.jsError.postMessage(`FileReader threw, error: ${err}`)
-//                        })
-//                        fr.readAsDataURL(data);
-//                    } catch (err) {
-//                        // TODO: better log the error, currently only TypeError: Type error
-//                        webkit.messageHandlers.jsError.postMessage(`JSError while downloading document, url: ${url}, err: ${err}`)
-//                    }
-//                })();
-//                // null is needed here as this eval returns the last statement and we can't return a promise
-//                null;
-//            """) { (result, err) in
-//            print("Result is = \(result)")
-//            if (err != nil) {
-//                debugPrint("JS ERR: \(String(describing: err))")
-//            }
-//        }
+//        openURL(path: absoluteUrl) // Testing
+        // TODO: Add more supported mime-types for missing content-disposition headers // That is also a test
+        webView?.evaluateJavascriptInDefaultContentWorld("""
+                (async function download() {
+                    const url = '\(absoluteUrl)';
+                    try {
+                        // we use a second try block here to have more detailed error information
+                        // because of the nature of JS the outer try-catch doesn't know anything where the error happended
+                        let res;
+                        try {
+                            res = await fetch(url, {
+                                credentials: 'include'
+                            });
+                        } catch (err) {
+                            webkit.messageHandlers.jsError.postMessage(`fetch threw, error: ${err}, url: ${url}`);
+                            return;
+                        }
+                        if (!res.ok) {
+                            webkit.messageHandlers.jsError.postMessage(`Response status was not ok, status: ${res.status}, url: ${url}`);
+                            return;
+                        }
+                        const contentDisp = res.headers.get('content-disposition');
+                        if (contentDisp) {
+                            const match = contentDisp.match(/(^;|)\\s*filename=\\s*(\"([^\"]*)\"|([^;\\s]*))\\s*(;|$)/i);
+                            if (match) {
+                                filename = match[3] || match[4];
+                            } else {
+                                // TODO: we could here guess the filename from the mime-type (e.g. unnamed.pdf for pdfs, or unnamed.tiff for tiffs)
+                                webkit.messageHandlers.jsError.postMessage(`content-disposition header could not be matched against regex, content-disposition: ${contentDisp} url: ${url}`);
+                            }
+                        } else {
+                            webkit.messageHandlers.jsError.postMessage(`content-disposition header missing, url: ${url}`);
+                            return;
+                        }
+                        if (!filename) {
+                            const contentType = res.headers.get('content-type');
+                            if (contentType) {
+                                if (contentType.indexOf('application/json') === 0) {
+                                    filename = 'unnamed.pdf';
+                                } else if (contentType.indexOf('image/tiff') === 0) {
+                                    filename = 'unnamed.tiff';
+                                }
+                            }
+                        }
+                        if (!filename) {
+                            webkit.messageHandlers.jsError.postMessage(`Could not determine filename from content-disposition nor content-type, content-dispositon: ${contentDispositon}, content-type: ${contentType}, url: ${url}`);
+                        }
+                        let data;
+                        try {
+                            data = await res.blob();
+                        } catch (err) {
+                            webkit.messageHandlers.jsError.postMessage(`res.blob() threw, error: ${err}, url: ${url}`);
+                            return;
+                        }
+                        const fr = new FileReader();
+                        fr.onload = () => {
+                            webkit.messageHandlers.openExt.postMessage(`${filename};${fr.result}`)
+                        };
+                        fr.addEventListener('error', (err) => {
+                            webkit.messageHandlers.jsError.postMessage(`FileReader threw, error: ${err}`)
+                        })
+                        fr.readAsDataURL(data);
+                    } catch (err) {
+                        // TODO: better log the error, currently only TypeError: Type error
+                        webkit.messageHandlers.jsError.postMessage(`JSError while downloading document, url: ${url}, err: ${err}`)
+                    }
+                })();
+                // null is needed here as this eval returns the last statement and we can't return a promise
+                null;
+            """) { (result, err) in
+            print("Result is = \(result)")
+            if (err != nil) {
+                debugPrint("JS ERR: \(String(describing: err))")
+            }
+        }
     }
     
     @objc func finishedLoadUpdates() {
@@ -520,3 +549,19 @@ fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ inp
     return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
 
+extension WebContainer: WKWebViewDownloadHelperDelegate {
+    func fileDownloadedAtURL(url: URL) {
+        DispatchQueue.main.async {
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            activityVC.popoverPresentationController?.sourceView = self
+            activityVC.popoverPresentationController?.sourceRect = self.frame
+            print("\(url)")
+            var finalURL = url
+            finalURL.deletePathExtension()
+            finalURL.appendPathExtension("zip")
+            self.executeDocumentDownloadScript(forAbsoluteUrl: finalURL.absoluteString)
+//            activityVC.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
+//            self.parentView.present(activityVC, animated: true, completion: nil)
+        }
+    }
+}

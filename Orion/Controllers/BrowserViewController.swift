@@ -294,7 +294,6 @@ class BrowserViewController: UIViewController, HistoryNavigationDelegate {
     }
     
     // MARK: - Import methods
-    
     @objc func openEditor(withSource source: String, andName name: String) {
         if let presentedController = self.presentedViewController {
             presentedController.dismiss(animated: false, completion: nil)

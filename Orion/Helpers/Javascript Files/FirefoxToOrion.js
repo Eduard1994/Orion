@@ -1,9 +1,5 @@
 // Enabling this extension will replace all
 // occurrences of "Firefox" with "Orion"
-// This is especially fun if you forget
-// you've enabled it. Try searching for
-// "the cloud" on google to see it in
-// action.
 
 walk(document.body);
 
