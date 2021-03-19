@@ -78,9 +78,25 @@ class URLBar: UIView {
             }
         }
         
+        refreshButton = UIButton(frame: CGRect(x: -5, y: 0, width: 12.5, height: 15)).then {
+            $0.setImage(imageNamed("refresh"), for: .normal)
+            $0.tintColor = .gray
+            
+            self.addSubview($0)
+            $0.snp.makeConstraints { (make) in
+                make.width.equalTo(25)
+                make.height.equalTo(25)
+                make.centerY.equalTo(self)
+                make.right.equalTo(self.menuButton!.snp.left).offset(-8)
+            }
+//            urlField?.rightView = $0
+//            urlField?.rightViewMode = .unlessEditing
+        }
+        
         urlField = SharedTextField().then { [unowned self] in
             $0.placeholder = "Address"
-            $0.textColor = .black
+            $0.textColor = .darkGray
+            $0.tintColor = .darkGray
             $0.backgroundColor = .white
             $0.layer.borderColor = UIColor.lightGray.cgColor
             $0.layer.borderWidth = 0.5
@@ -111,15 +127,8 @@ class URLBar: UIView {
                 }
                 make.top.equalTo(self).offset(8)
                 make.bottom.equalTo(self).offset(-8)
-                make.right.equalTo(self.menuButton!.snp.left).offset(-8)
+                make.right.equalTo(self.refreshButton!.snp.left).offset(-8)
             }
-        }
-        
-        refreshButton = UIButton(frame: CGRect(x: -5, y: 0, width: 12.5, height: 15)).then {
-            $0.setImage(UIImage.imageFrom(systemItem: .refresh)?.withRenderingMode(.alwaysTemplate), for: .normal)
-            $0.tintColor = .gray
-            urlField?.rightView = $0
-            urlField?.rightViewMode = .unlessEditing
         }
     }
     

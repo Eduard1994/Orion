@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import RealmSwift
 import LUAutocompleteView
 import JavaScriptCore
 
@@ -269,6 +270,45 @@ class BrowserViewController: UIViewController, HistoryNavigationDelegate {
         }
         
         self.present(nav, animated: true, completion: nil)
+    }
+    
+    @objc func removeTopSites() {
+        do {
+            let realm = try Realm()
+            try realm.write {
+                let topSites = realm.objects(TopSite.self)
+                if topSites.count > 0 {
+                    realm.delete(topSites)
+                    tabContainer?.currentTab?.webContainer?.webView?.reload()
+                }
+            }
+        } catch let error as NSError {
+            print("Could not delete object: \(error.localizedDescription)")
+        }
+    }
+    
+    @objc func addTopSites() {
+        guard let pageIconURL = tabContainer?.currentTab?.webContainer?.favicon?.getPreferredURL(), pageIconURL != "" else {
+            return
+        }
+        guard let pageTitle = tabContainer?.currentTab?.webContainer?.webView?.title, pageTitle != "" else {
+            return
+        }
+        
+        guard let pageURL = tabContainer?.currentTab?.webContainer?.webView?.url?.absoluteString, pageTitle != "", pageTitle != "New Tab" else {
+            return
+        }
+        
+        let topSite = TopSite(value: ["name": pageTitle, "pageURL": pageURL, "iconURL": pageIconURL])
+        
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(topSite)
+            }
+        } catch let error {
+            logRealmError(error: error)
+        }
     }
     
     @objc func didSelectEntry(with url: URL?) {

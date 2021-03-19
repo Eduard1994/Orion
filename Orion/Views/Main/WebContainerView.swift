@@ -17,8 +17,6 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
     @objc var webView: WKWebView?
     @objc var isObserving = false
     
-    var helper:WKWebviewDownloadHelper!
-    
     @objc weak var tabView: TabView?
     var favicon: Favicon?
     var currentScreenshot: UIImage?
@@ -85,9 +83,6 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
                 let _ = self?.webView?.load(URLRequest(url: URL(string: "http://localhost:8080")!))
             }
         }
-        
-        let mimeTypes = [MimeType(type: "ms-excel", fileExtension: "xls"), MimeType(type: "pdf", fileExtension: "pdf"), MimeType(type: "xpi", fileExtension: "xpi"), MimeType(type: "zip", fileExtension: "zip")]
-        helper = WKWebviewDownloadHelper(webView: webView!, mimeTypes: mimeTypes, delegate: self)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -258,14 +253,48 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("Start provisional navigation")
         favicon = nil
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        print("Finished load updates")
         finishedLoadUpdates()
+        if UserDefaults.standard.bool(forKey: "topSitesActivated") {
+            if let url = webView.url {
+                if url.absoluteString.contains("top-sites-button") {
+                    if let filePath = Bundle.main.path(forResource: "TopSitesActivated", ofType: "js") {
+                        if let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
+                            webView.evaluateJavascriptInDefaultContentWorld(content, { (result, error) in
+                                if let error = error {
+                                    print(error)
+                                }
+                                print(result as Any)
+                            })
+                        }
+                    }
+                }
+            }
+        } else if UserDefaults.standard.bool(forKey: "topSitesDisabled") {
+            if let url = webView.url {
+                if url.absoluteString.contains("top-sites-button") {
+                    if let filePath = Bundle.main.path(forResource: "TopSitesDisabled", ofType: "js") {
+                        if let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
+                            webView.evaluateJavascriptInDefaultContentWorld(content, { (result, error) in
+                                if let error = error {
+                                    print(error)
+                                }
+                                print(result as Any)
+                            })
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        decisionHandler(.allow)
         if let mimeType = navigationResponse.response.mimeType {
             print("Mime type = \(mimeType)")
         }
@@ -283,24 +312,41 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
             urlString.deletePathExtension()
             urlString.appendPathExtension("zip")
             let destURL = URL.documents.appendingPathComponent("top_sites_button")
-            executeDocumentDownloadScript(forAbsoluteUrl: urlString.absoluteString)
-            Downloader.load(url: urlString, to: destURL) {
-                print("Downloaded")
-                DispatchQueue.main.async {
-                    do {
-                        guard let filePath = Bundle.main.path(forResource: "panel", ofType: "html")
-                        else {
-                            // File Error
-                            print ("File reading error")
-                            return
+            if UserDefaults.standard.bool(forKey: "topSitesDisabled") {
+                Downloader.load(url: urlString, to: destURL) {
+                    print("Downloaded")
+                    DispatchQueue.main.async {
+                        if let filePath = Bundle.main.path(forResource: "TopSitesActivated", ofType: "js") {
+                            if let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
+                                webView.evaluateJavascriptInDefaultContentWorld(content, { (result, error) in
+                                    let ac = UIAlertController(title: "Extension Downloaded", message: urlString.lastPathComponent, preferredStyle: .alert)
+                                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                                        if let vc = self.parentViewController as? BrowserViewController {
+                                            UserDefaults.standard.set(true, forKey: "topSitesActivated")
+                                            UserDefaults.standard.set(false, forKey: "topSitesDisabled")
+                                            vc.addTab()
+                                        }
+                                    }))
+                                    self.parentViewController?.present(ac, animated: true, completion: nil)
+                                })
+                            }
                         }
-                        
-                        let contents =  try String(contentsOfFile: filePath, encoding: .utf8)
-                        let baseUrl = URL(fileURLWithPath: filePath)
-                        webView.loadHTMLString(contents as String, baseURL: baseUrl)
                     }
-                    catch {
-                        print ("File HTML error")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    if let filePath = Bundle.main.path(forResource: "TopSitesDisabled", ofType: "js") {
+                        if let content = try? String(contentsOfFile: filePath, encoding: .utf8) {
+                            webView.evaluateJavascriptInDefaultContentWorld(content)
+                            let ac = UIAlertController(title: "Extension Removed", message: urlString.lastPathComponent, preferredStyle: .alert)
+                            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                                if let vc = self.parentViewController as? BrowserViewController {
+                                    UserDefaults.standard.set(false, forKey: "topSitesActivated")
+                                    UserDefaults.standard.set(true, forKey: "topSitesDisabled")
+                                }
+                            }))
+                            self.parentViewController?.present(ac, animated: true, completion: nil)
+                        }
                     }
                 }
             }
@@ -357,87 +403,6 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         print("Local URL")
     }
     
-    /*
-     Intercept the download of documents in webView, trigger the download in JavaScript and pass the binary file to JavaScript handler in Swift code
-     */
-    private func executeDocumentDownloadScript(forAbsoluteUrl absoluteUrl : String) {
-//        openURL(path: absoluteUrl) // Testing
-        // TODO: Add more supported mime-types for missing content-disposition headers // That is also a test
-        webView?.evaluateJavascriptInDefaultContentWorld("""
-                (async function download() {
-                    const url = '\(absoluteUrl)';
-                    try {
-                        // we use a second try block here to have more detailed error information
-                        // because of the nature of JS the outer try-catch doesn't know anything where the error happended
-                        let res;
-                        try {
-                            res = await fetch(url, {
-                                credentials: 'include'
-                            });
-                        } catch (err) {
-                            webkit.messageHandlers.jsError.postMessage(`fetch threw, error: ${err}, url: ${url}`);
-                            return;
-                        }
-                        if (!res.ok) {
-                            webkit.messageHandlers.jsError.postMessage(`Response status was not ok, status: ${res.status}, url: ${url}`);
-                            return;
-                        }
-                        const contentDisp = res.headers.get('content-disposition');
-                        if (contentDisp) {
-                            const match = contentDisp.match(/(^;|)\\s*filename=\\s*(\"([^\"]*)\"|([^;\\s]*))\\s*(;|$)/i);
-                            if (match) {
-                                filename = match[3] || match[4];
-                            } else {
-                                // TODO: we could here guess the filename from the mime-type (e.g. unnamed.pdf for pdfs, or unnamed.tiff for tiffs)
-                                webkit.messageHandlers.jsError.postMessage(`content-disposition header could not be matched against regex, content-disposition: ${contentDisp} url: ${url}`);
-                            }
-                        } else {
-                            webkit.messageHandlers.jsError.postMessage(`content-disposition header missing, url: ${url}`);
-                            return;
-                        }
-                        if (!filename) {
-                            const contentType = res.headers.get('content-type');
-                            if (contentType) {
-                                if (contentType.indexOf('application/json') === 0) {
-                                    filename = 'unnamed.pdf';
-                                } else if (contentType.indexOf('image/tiff') === 0) {
-                                    filename = 'unnamed.tiff';
-                                }
-                            }
-                        }
-                        if (!filename) {
-                            webkit.messageHandlers.jsError.postMessage(`Could not determine filename from content-disposition nor content-type, content-dispositon: ${contentDispositon}, content-type: ${contentType}, url: ${url}`);
-                        }
-                        let data;
-                        try {
-                            data = await res.blob();
-                        } catch (err) {
-                            webkit.messageHandlers.jsError.postMessage(`res.blob() threw, error: ${err}, url: ${url}`);
-                            return;
-                        }
-                        const fr = new FileReader();
-                        fr.onload = () => {
-                            webkit.messageHandlers.openExt.postMessage(`${filename};${fr.result}`)
-                        };
-                        fr.addEventListener('error', (err) => {
-                            webkit.messageHandlers.jsError.postMessage(`FileReader threw, error: ${err}`)
-                        })
-                        fr.readAsDataURL(data);
-                    } catch (err) {
-                        // TODO: better log the error, currently only TypeError: Type error
-                        webkit.messageHandlers.jsError.postMessage(`JSError while downloading document, url: ${url}, err: ${err}`)
-                    }
-                })();
-                // null is needed here as this eval returns the last statement and we can't return a promise
-                null;
-            """) { (result, err) in
-            print("Result is = \(result)")
-            if (err != nil) {
-                debugPrint("JS ERR: \(String(describing: err))")
-            }
-        }
-    }
-    
     @objc func finishedLoadUpdates() {
         guard let webView = webView else { return }
         
@@ -445,6 +410,29 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
         
         tabView?.tabTitle = webView.title
         tryToGetFavicon(for: webView.url)
+        
+        if let vc = self.parentViewController as? BrowserViewController {
+            if UserDefaults.standard.bool(forKey: "topSitesActivated") {
+                var topSites: Results<TopSite>?
+                do {
+                    let realm = try Realm()
+                    topSites = realm.objects(TopSite.self)
+                    if let sitesArray = topSites?.toArray(ofType: TopSite.self) {
+                        let sites = sitesArray.compactMap{ $0.pageURL }.distinct().unique
+                        if let url = webView.url?.absoluteString {
+                            if !sites.contains(url) {
+                                vc.addTopSites()
+                            }
+                        }
+                    }
+                } catch {
+                    topSites = nil
+                    print("Error: \(error.localizedDescription)")
+                }
+            } else if UserDefaults.standard.bool(forKey: "topSitesDisabled") {
+                vc.removeTopSites()
+            }
+        }
         
         if let tabContainer = TabContainerView.currentInstance, isObserving {
             let attrUrl = WebViewManager.shared.getColoredURL(url: webView.url)
@@ -481,13 +469,6 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
     
     func handleError(_ error: NSError) {
         print(error.localizedDescription)
-//        if let failUrl = error.userInfo["NSErrorFailingURLStringKey"] as? String, let url = URL(string: failUrl), !failUrl.contains("localhost") {
-//            UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: { success in
-//                if success {
-//                    print("openURL succeeded")
-//                }
-//            })
-//        }
     }
     
     // MARK: - Alert Methods
@@ -547,21 +528,4 @@ class WebContainer: UIView, WKNavigationDelegate, WKUIDelegate, WKScriptMessageH
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
     return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
-}
-
-extension WebContainer: WKWebViewDownloadHelperDelegate {
-    func fileDownloadedAtURL(url: URL) {
-        DispatchQueue.main.async {
-            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-            activityVC.popoverPresentationController?.sourceView = self
-            activityVC.popoverPresentationController?.sourceRect = self.frame
-            print("\(url)")
-            var finalURL = url
-            finalURL.deletePathExtension()
-            finalURL.appendPathExtension("zip")
-            self.executeDocumentDownloadScript(forAbsoluteUrl: finalURL.absoluteString)
-//            activityVC.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
-//            self.parentView.present(activityVC, animated: true, completion: nil)
-        }
-    }
 }

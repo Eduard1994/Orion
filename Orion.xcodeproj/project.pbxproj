@@ -32,9 +32,10 @@
 		FF74D4C925FEC7810005E1CD /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF74D4C825FEC7810005E1CD /* AppInfo.swift */; };
 		FF74D4CC25FEC7B80005E1CD /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF74D4CB25FEC7B80005E1CD /* DeviceInfo.swift */; };
 		FF788AED2602191E0027443F /* TopSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF788AEC2602191E0027443F /* TopSite.swift */; };
-		FF788AF02602201C0027443F /* Download.js in Resources */ = {isa = PBXBuildFile; fileRef = FF788AEF2602201C0027443F /* Download.js */; };
+		FF7D16C82603F45300769B1E /* TopSitesDisabled.js in Resources */ = {isa = PBXBuildFile; fileRef = FF7D16C72603F45300769B1E /* TopSitesDisabled.js */; };
 		FF848E1D25FA10F60069F769 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF848E1C25FA10F60069F769 /* UIView+Extension.swift */; };
 		FF89863F2601BE9A00EE6D48 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF89863E2601BE9A00EE6D48 /* NetworkExtension.framework */; };
+		FFB6229A260382F500F2289C /* TopSitesActivated.js in Resources */ = {isa = PBXBuildFile; fileRef = FFB62299260382F500F2289C /* TopSitesActivated.js */; };
 		FFB84FC925FF37B0009EFF8B /* DownloadQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB84FC825FF37B0009EFF8B /* DownloadQueue.swift */; };
 		FFB84FCC25FF3894009EFF8B /* DownloadContentScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB84FCB25FF3894009EFF8B /* DownloadContentScript.swift */; };
 		FFB84FCF25FF3BDA009EFF8B /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB84FCE25FF3BDA009EFF8B /* Bytes.swift */; };
@@ -111,10 +112,11 @@
 		FF74D4C825FEC7810005E1CD /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		FF74D4CB25FEC7B80005E1CD /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
 		FF788AEC2602191E0027443F /* TopSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSite.swift; sourceTree = "<group>"; };
-		FF788AEF2602201C0027443F /* Download.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Download.js; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.javascript; };
+		FF7D16C72603F45300769B1E /* TopSitesDisabled.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = TopSitesDisabled.js; sourceTree = "<group>"; };
 		FF848E1C25FA10F60069F769 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		FF89863D2601BE9A00EE6D48 /* Orion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Orion.entitlements; sourceTree = "<group>"; };
 		FF89863E2601BE9A00EE6D48 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		FFB62299260382F500F2289C /* TopSitesActivated.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = TopSitesActivated.js; sourceTree = "<group>"; };
 		FFB84FC825FF37B0009EFF8B /* DownloadQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadQueue.swift; sourceTree = "<group>"; };
 		FFB84FCB25FF3894009EFF8B /* DownloadContentScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadContentScript.swift; sourceTree = "<group>"; };
 		FFB84FCE25FF3BDA009EFF8B /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
@@ -198,8 +200,9 @@
 				FF11D71425FAE8EA00923764 /* Favicons.js */,
 				FFB9E07525FC6745006B2654 /* TopSites.js */,
 				FF11D71725FAE8F400923764 /* FirefoxToOrion.js */,
+				FFB62299260382F500F2289C /* TopSitesActivated.js */,
+				FF7D16C72603F45300769B1E /* TopSitesDisabled.js */,
 				FFD279EE25FECDE8000F6DDC /* __firefox__.js */,
-				FF788AEF2602201C0027443F /* Download.js */,
 			);
 			path = "Javascript Files";
 			sourceTree = "<group>";
@@ -446,13 +449,14 @@
 			files = (
 				FFD279EF25FECDE8000F6DDC /* __firefox__.js in Resources */,
 				FF11D71B25FAEA0500923764 /* topdomains.txt in Resources */,
+				FFB6229A260382F500F2289C /* TopSitesActivated.js in Resources */,
+				FF7D16C82603F45300769B1E /* TopSitesDisabled.js in Resources */,
 				FF4D884B25F9F09B00C1263F /* LaunchScreen.storyboard in Resources */,
 				FF4D884825F9F09B00C1263F /* Assets.xcassets in Resources */,
 				FFB9E07625FC6745006B2654 /* TopSites.js in Resources */,
 				FF4D884625F9F09800C1263F /* Main.storyboard in Resources */,
 				FF11D71525FAE8EA00923764 /* Favicons.js in Resources */,
 				FF11D71825FAE8F400923764 /* FirefoxToOrion.js in Resources */,
-				FF788AF02602201C0027443F /* Download.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,62 +19,62 @@ class WebServer {
         <html>
         <head>
             <title>New Tab</title>
-            <style type="text/css">
-                * {
-                    font-family: sans-serif;
-                }
+                        <style type="text/css">
+                            * {
+                                font-family: sans-serif;
+                            }
 
-                h1 {
-                    padding-top: 72px;
-                    font-size: 72px;
-                }
+                            h1 {
+                                padding-top: 72px;
+                                font-size: 72px;
+                            }
 
-                #noBookmark {
-                    padding-top: 144px;
-                    font-size: 48px;
-                }
-                
-                .bookmarkTitle {
-                    margin: 0;
-                    font-size: 36px;
-                    overflow: hidden;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
-                }
+                            #noTopSite {
+                                padding-top: 144px;
+                                font-size: 48px;
+                            }
+                            
+                            .topSiteTitle {
+                                margin: 0;
+                                font-size: 36px;
+                                overflow: hidden;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 1;
+                                -webkit-box-orient: vertical;
+                            }
 
-                .container {
-                    padding-top: 144px;
-                    padding-left: 5%;
-                    padding-right: 5%;
-                }
-                
-                .floatBlock {
-                    display: inline-block;
-                    float: left;
-                    width: 33%;
-                    padding-bottom: 33%
-                }
+                            .container {
+                                padding-top: 144px;
+                                padding-left: 5%;
+                                padding-right: 5%;
+                            }
+                            
+                            .floatBlock {
+                                display: inline-block;
+                                float: left;
+                                width: 33%;
+                                padding-bottom: 33%
+                            }
 
-                a img {
-                    display: block;
-                    margin: auto;
-                }
+                            a img {
+                                display: block;
+                                margin: auto;
+                            }
 
-                .footer {
-                    background: #EFEFEF;
-                    position: fixed;
-                    bottom: 0;
-                    width: 100%;
-                    height: 100px;
-                    font-size: 28px;
-                    margin: 0;
-                    padding-bottom: env(safe-area-inset-bottom);
-                }
-            </style>
+                            .footer {
+                                background: #EFEFEF;
+                                position: fixed;
+                                bottom: 0;
+                                width: 100%;
+                                height: 100px;
+                                font-size: 28px;
+                                margin: 0;
+                                padding-bottom: env(safe-area-inset-bottom);
+                            }
+                    </style>
         </head>
         <body>
-            <h1 align="center">New Tab</h1>
+            <h1 align="center">Top Sites</h1>
         """
     let newTabEnd = """
         <div class="footer">
@@ -112,32 +112,70 @@ class WebServer {
     func getNewTabHTMLString() -> String {
         var result = newTabHTMLStart
         
-        let bookmarks: Results<Bookmark>?
+        let topSites: Results<TopSite>?
+        var sites: [TopSite]?
         do {
             let realm = try Realm()
-            bookmarks = realm.objects(Bookmark.self)
+            topSites = realm.objects(TopSite.self)
+            let sitesArray = (topSites?.toArray(ofType: TopSite.self) ?? [])
+            sites = sitesArray.unique
         } catch {
-            bookmarks = nil
+            topSites = nil
             print("Error: \(error.localizedDescription)")
         }
-        
-        if let bookmarks = bookmarks, bookmarks.count > 0 {
+
+        if let topSites = sites, topSites.count > 0 {
             result += "<div class=\"container\">"
-            for i in 0..<min(6, bookmarks.count) {
-                let iconLoc = (bookmarks[i].iconURL == "") ? "http://localhost:8080/noimage" : bookmarks[i].iconURL
+            for i in 0..<min(10, topSites.count) {
+                let iconLoc = (topSites[i].iconURL == "") ? "http://localhost:8080/noimage" : topSites[i].iconURL
                 result += """
                     <div class="floatBlock">
-                <a href="\(bookmarks[i].pageURL)"><img src="\(iconLoc)" onerror=\"this.src='/noimage';\" width=200px height=200px></a>
-                    <p class="bookmarkTitle" align=\"center\">\(bookmarks[i].name)</p>
+                <a href="\(topSites[i].pageURL)"><img src="\(iconLoc)" onerror=\"this.src='/noimage';\" width=200px height=200px></a>
+                    <p class="topSiteTitle" align=\"center\">\(topSites[i].name)</p>
                     </div>
                 """
             }
             result += "</div>"
         } else {
-            result += "<p id=\"noBookmark\" align=\"center\">Go add some bookmarks to see them here!</p>"
+            result += "<p id=\"noTopSite\" align=\"center\">Go add some sites to see them here!</p>"
         }
         
         return result + newTabEnd
     }
 }
 
+extension Results {
+    func toArray<T>(ofType: T.Type) -> [T] {
+        var array = [T]()
+        for i in 0 ..< count {
+            if let result = self[i] as? T {
+                array.append(result)
+            }
+        }
+
+        return array
+    }
+}
+
+extension Sequence where Iterator.Element: Hashable {
+    func uniqueee() -> [Iterator.Element] {
+        var seen: Set<Iterator.Element> = []
+        return filter { seen.insert($0).inserted }
+    }
+}
+
+extension Array where Element: Hashable {
+    func distinct() -> Array<Element> {
+        var set = Set<Element>()
+        return filter {
+            guard !set.contains($0) else { return false }
+            set.insert($0)
+            return true
+        }
+    }
+    
+    func distincts() -> Array<Element> {
+        var set = Set<Element>()
+        return filter { set.insert($0).inserted }
+    }
+}
